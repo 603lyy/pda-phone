@@ -50,4 +50,6 @@ dependencies {
     //bugly崩溃收集
     implementation 'com.tencent.bugly:crashreport:latest.release'
     implementation files('libs/tbs_sdk_thirdapp_v3.6.0.1183_43604.jar')
+    //二维码扫描
+    implementation 'cn.yipianfengye.android:zxing-library:2.2'
 }

@@ -4,21 +4,37 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.device.ScanDevice;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yaheen.pdaapp.BaseApp;
 import com.yaheen.pdaapp.R;
 import com.yaheen.pdaapp.util.DialogUtils;
 import com.yaheen.pdaapp.util.dialog.DialogCallback;
 import com.yaheen.pdaapp.util.dialog.IDialogCancelCallback;
 
+import java.io.File;
+
 public class MainActivity extends BaseActivity {
 
     private final static String SCAN_ACTION = "scan.rcv.message";
+
+    /**
+     * 扫描跳转Activity RequestCode
+     */
+    public static final int REQUEST_CODE = 111;
 
     private ScanDevice sm;
 
@@ -53,13 +69,15 @@ public class MainActivity extends BaseActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,ManageActivity.class);
                 startActivity(intent);
+//                Intent intent = new Intent(getApplication(), CaptureActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE);
             }
         });
 
         llMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,WebActivity.class);
+                Intent intent = new Intent(MainActivity.this, WebActivity.class);
                 startActivity(intent);
             }
         });
@@ -67,10 +85,51 @@ public class MainActivity extends BaseActivity {
         llReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,ReportActivity.class);
+                Intent intent = new Intent(MainActivity.this, ReportActivity.class);
                 startActivity(intent);
             }
         });
+
+        initPermission();
+    }
+
+    private void initPermission() {
+        int sdkVersion = Build.VERSION.SDK_INT;
+        if (sdkVersion > 22) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{android
+                    .Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA}, 1);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /**
+         * 处理二维码扫描结果
+         */
+        if (requestCode == REQUEST_CODE) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    if (result != null) {
+                        Log.i("lin", "onActivityResult: " + result);
+//                        courseNameEdit.setText(result);
+                    } else {
+                        Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                    }
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 
     @Override

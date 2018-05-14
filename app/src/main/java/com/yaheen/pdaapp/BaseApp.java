@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.smtt.sdk.QbSdk;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.yaheen.pdaapp.util.FreeHandSystemUtil;
 
 import org.xutils.x;
@@ -79,6 +80,9 @@ public class BaseApp extends android.app.Application {
         };
         //x5内核初始化接口
         QbSdk.initX5Environment(getApplicationContext(), cb);
+
+        //二维码扫描
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
     public String getSafeUUid() {
