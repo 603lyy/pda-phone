@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=申请到的百度的密钥"></script>
+	<title>GPS转百度</title>
+</head>
+<body>
+	<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+	// 百度地图API功能
+	//GPS坐标
+	var xx = 116.397428;
+	var yy = 39.90923;
+	var gpsPoint = new BMap.Point(xx,yy);
+
+	//地图初始化
+	var bm = new BMap.Map("allmap");
+	bm.centerAndZoom(gpsPoint, 15);
+	bm.addControl(new BMap.NavigationControl());
+
+	//坐标转换完之后的回调函数
+
+	//此处显示的就是纠偏后的经纬度
+	translateCallback = function (point){
+		var marker = new BMap.Marker(point);
+		bm.addOverlay(marker);
+		bm.setCenter(point);
+	}
+	BMap.Convertor.translate(gpsPoint,0,translateCallback);     //真实经纬度转成百度坐标
+</script>

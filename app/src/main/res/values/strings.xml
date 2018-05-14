@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">PdaApp</string>
+    <string name="title_activity_bind">BindActivity</string>
+
+    <string name="title_bar_msg_text">门牌信息</string>
+    <string name="btn_commit_text">提交</string>
+
+    <string name="bind_activity_short_link">短链接：</string>
+    <string name="bind_activity_chip">芯片id：</string>
+    <string name="bind_activity_scan">扫描</string>
+    <string name="bind_activity_fetch">读取</string>
+    <string name="bind_activity_commit">绑定</string>
+    <string name="bind_activity_short_link_empty">短链接不能为空</string>
+    <string name="bind_activity_chip_empty">芯片id不能为空</string>
+    <string name="bind_activity_bind_success">绑定成功</string>
+    <string name="bind_activity_bind_fail">绑定失败</string>
+
+
+    <string name="msg_sex_text">性别：</string>
+    <string name="msg_id_text">门牌号：</string>
+    <string name="msg_phone_text">电话：</string>
+    <string name="msg_mobile_text">手机：</string>
+    <string name="msg_address_text">地址：</string>
+    <string name="msg_community_text">社区：</string>
+    <string name="msg_username_text">用户名：</string>
+    <string name="msg_peoplenumber_text">人数：</string>
+    <string name="msg_party_member_text">党员户：</string>
+
+    <string name="report_title_content">报障</string>
+    <string name="report_address">门牌地址：</string>
+    <string name="report_chip">芯片编号：</string>
+    <string name="report_fetch">读取</string>
+    <string name="report_scan">扫描</string>
+</resources>
