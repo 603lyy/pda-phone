@@ -58,39 +58,46 @@ public class MainActivity extends BaseActivity {
         llBind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                sm.startScan();
-                Intent intent = new Intent(MainActivity.this, BindActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MainActivity.this, BindActivity.class);
+//                startActivity(intent);
+                cancelOpen();
             }
         });
 
         llManage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,ManageActivity.class);
-                startActivity(intent);
-//                Intent intent = new Intent(getApplication(), CaptureActivity.class);
-//                startActivityForResult(intent, REQUEST_CODE);
+//                Intent intent = new Intent(MainActivity.this,ManageActivity.class);
+//                startActivity(intent);
+                cancelOpen();
             }
         });
 
         llMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, WebActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(getApplication(), CaptureActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+
+//                Intent intent = new Intent(MainActivity.this, WebActivity.class);
+//                startActivity(intent);
             }
         });
 
         llReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ReportActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MainActivity.this, ReportActivity.class);
+//                startActivity(intent);
+                cancelOpen();
             }
         });
 
         initPermission();
+    }
+
+    private void cancelOpen() {
+        Toast.makeText(this, "该功能还在开发中", Toast.LENGTH_SHORT).show();
     }
 
     private void initPermission() {
@@ -100,6 +107,7 @@ public class MainActivity extends BaseActivity {
                     .Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA}, 1);
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -120,8 +128,9 @@ public class MainActivity extends BaseActivity {
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
                     if (result != null) {
-                        Log.i("lin", "onActivityResult: " + result);
-//                        courseNameEdit.setText(result);
+                        Intent intent = new Intent(MainActivity.this, WebActivity.class);
+                        intent.putExtra("shortCode",result);
+                        startActivity(intent);
                     } else {
                         Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
                     }

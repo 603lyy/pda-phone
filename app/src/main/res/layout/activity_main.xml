@@ -27,7 +27,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_background" />
+                android:background="@drawable/ic_chip" />
 
             <TextView
                 android:id="@+id/tv_bind"
@@ -53,7 +53,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_background" />
+                android:background="@drawable/ic_doorplate" />
 
             <TextView
                 android:id="@+id/tv_msg"
@@ -87,7 +87,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_background" />
+                android:background="@drawable/ic_data" />
 
             <TextView
                 android:id="@+id/tv_manage"
@@ -113,7 +113,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/ic_launcher_background" />
+                android:background="@drawable/ic_breakdown" />
 
             <TextView
                 android:id="@+id/tv_report"
