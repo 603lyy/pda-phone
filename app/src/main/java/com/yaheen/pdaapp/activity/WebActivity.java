@@ -22,6 +22,7 @@ import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.yaheen.pdaapp.R;
+import com.yaheen.pdaapp.util.ProgersssDialog;
 import com.yaheen.pdaapp.widget.X5WebView;
 
 public class WebActivity extends BaseActivity {
@@ -32,7 +33,9 @@ public class WebActivity extends BaseActivity {
 
     private X5WebView mWebView;
 
-    private String url = "http://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do?shortLinkCode=";
+    private ProgersssDialog progersssDialog;
+
+    private String url = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do?shortLinkCode=";
 
     private String shortCode;
 
@@ -99,6 +102,10 @@ public class WebActivity extends BaseActivity {
         webSetting.setGeolocationDatabasePath(this.getDir("geolocation", 0)
                 .getPath());
         webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
+
+        //手机屏幕适配
+        webSetting.setLoadWithOverviewMode(true);
+        webSetting.setUseWideViewPort(true);
 
         //启用数据库
         webSetting.setDatabaseEnabled(true);
