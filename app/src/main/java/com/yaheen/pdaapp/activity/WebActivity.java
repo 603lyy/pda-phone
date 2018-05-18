@@ -107,6 +107,11 @@ public class WebActivity extends BaseActivity {
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setUseWideViewPort(true);
 
+        //禁止放大
+        webSetting.setBuiltInZoomControls(false);
+        webSetting.setSupportZoom(false);
+        webSetting.setDisplayZoomControls(false);
+
         //启用数据库
         webSetting.setDatabaseEnabled(true);
         webSetting.setJavaScriptCanOpenWindowsAutomatically(true);//支持JavaScriptEnabled

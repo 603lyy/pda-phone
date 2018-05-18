@@ -27,7 +27,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/ic_chip" />
+                android:background="@drawable/ic_chip_gray" />
 
             <TextView
                 android:id="@+id/tv_bind"
@@ -87,7 +87,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/ic_data" />
+                android:background="@drawable/ic_data_gray" />
 
             <TextView
                 android:id="@+id/tv_manage"
@@ -113,7 +113,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/ic_breakdown" />
+                android:background="@drawable/ic_breakdown_gray" />
 
             <TextView
                 android:id="@+id/tv_report"
