@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -13,7 +14,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.tencent.smtt.export.external.interfaces.GeolocationPermissionsCallback;
 import com.tencent.smtt.sdk.CookieSyncManager;
@@ -21,13 +24,19 @@ import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yaheen.pdaapp.R;
 import com.yaheen.pdaapp.util.ProgersssDialog;
+import com.yaheen.pdaapp.widget.WebJavaScriptProvider;
 import com.yaheen.pdaapp.widget.X5WebView;
 
 public class WebActivity extends BaseActivity {
 
-    //    private WebView web_content;
+    /**
+     * 扫描跳转Activity RequestCode
+     */
+    public static final int REQUEST_CODE = 111;
 
     private ViewGroup mViewParent;
 
@@ -37,7 +46,13 @@ public class WebActivity extends BaseActivity {
 
     private String url = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do?shortLinkCode=";
 
-    private String shortCode;
+    private String baseUrl = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do";
+
+    private String shortCode = "";
+
+    private String type = "mark=";
+
+    private String typeStr = "a";
 
     @SuppressLint("JavascriptInterface")
     @Override
@@ -47,19 +62,27 @@ public class WebActivity extends BaseActivity {
 
         mViewParent = (ViewGroup) findViewById(R.id.web_parent);
 
-        shortCode = getIntent().getStringExtra("shortCode");
+//        shortCode = getIntent().getStringExtra("shortCode");
 
         init();
 
-        if (!TextUtils.isEmpty(shortCode)) {
-            shortCode = shortCode.substring(shortCode.lastIndexOf("/") + 1);
-            loadUrl();
-        }
+        loadUrl();
+
+//        if (!TextUtils.isEmpty(shortCode)) {
+//            shortCode = shortCode.substring(shortCode.lastIndexOf("/") + 1);
+//            loadUrl();
+//        }
     }
 
     private void loadUrl() {
 //        mWebView.loadUrl("file:///android_asset/web.html");
-        mWebView.loadUrl(url + shortCode);
+        shortCode = shortCode.substring(shortCode.lastIndexOf("/") + 1);
+        if (!TextUtils.isEmpty(shortCode)) {
+            mWebView.loadUrl(url + shortCode + "&" + type + typeStr);
+        } else {
+            mWebView.loadUrl(baseUrl + "?" + type + typeStr);
+//        mWebView.loadUrl("file:///android_asset/web.html");
+        }
     }
 
     private void init() {
@@ -127,6 +150,55 @@ public class WebActivity extends BaseActivity {
 
         CookieSyncManager.createInstance(this);
         CookieSyncManager.getInstance().sync();
+
+        mWebView.addJavascriptInterface(new FetchProvider(this, this), "android");
+    }
+
+    class FetchProvider extends WebJavaScriptProvider {
+
+        public FetchProvider(Context ctx, BaseActivity activity) {
+            super(ctx, activity);
+        }
+
+        @JavascriptInterface
+        public void openFetch(String mark) {
+            typeStr = mark;
+            Intent intent = new Intent(getApplication(), CaptureActivity.class);
+            startActivityForResult(intent, REQUEST_CODE);
+        }
+
+        @JavascriptInterface
+        public void back() {
+            finish();
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /**
+         * 处理二维码扫描结果
+         */
+        if (requestCode == REQUEST_CODE) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    if (result != null) {
+                        shortCode = result;
+                        loadUrl();
+                    } else {
+                        Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                    }
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 
     @Override
