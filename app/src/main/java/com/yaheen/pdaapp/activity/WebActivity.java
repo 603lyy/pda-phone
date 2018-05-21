@@ -81,7 +81,6 @@ public class WebActivity extends BaseActivity {
             mWebView.loadUrl(url + shortCode + "&" + type + typeStr);
         } else {
             mWebView.loadUrl(baseUrl + "?" + type + typeStr);
-//        mWebView.loadUrl("file:///android_asset/web.html");
         }
     }
 
