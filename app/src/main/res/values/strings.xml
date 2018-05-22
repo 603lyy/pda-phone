@@ -5,6 +5,7 @@
     <string name="title_bar_msg_text">门牌信息</string>
     <string name="btn_commit_text">提交</string>
 
+    <string name="bind_activity_title_content">芯片绑定</string>
     <string name="bind_activity_short_link">短链接：</string>
     <string name="bind_activity_chip">芯片id：</string>
     <string name="bind_activity_scan">扫描</string>

@@ -44,9 +44,13 @@ public class WebActivity extends BaseActivity {
 
     private ProgersssDialog progersssDialog;
 
-    private String url = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do?shortLinkCode=";
+    private String url = "https://lhhk.020szsq.com/tool/toEntryMatch.do?shortLinkCode=";
 
-    private String baseUrl = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do";
+    private String baseUrl = "https://lhhk.020szsq.com/tool/toEntryMatch.do";
+
+//    private String url = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do?shortLinkCode=";
+//
+//    private String baseUrl = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do";
 
     private String shortCode = "";
 
@@ -65,7 +69,7 @@ public class WebActivity extends BaseActivity {
 //        shortCode = getIntent().getStringExtra("shortCode");
 
         init();
-
+        progersssDialog = new ProgersssDialog(this);
         loadUrl();
 
 //        if (!TextUtils.isEmpty(shortCode)) {
@@ -188,6 +192,7 @@ public class WebActivity extends BaseActivity {
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
                     if (result != null) {
+                        progersssDialog = new ProgersssDialog(this);
                         shortCode = result;
                         loadUrl();
                     } else {
@@ -215,6 +220,9 @@ public class WebActivity extends BaseActivity {
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
+            if (newProgress == 100) {
+                progersssDialog.dismiss();
+            }
         }
 
         @Override

@@ -113,7 +113,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/ic_breakdown_gray" />
+                android:background="@drawable/ic_breakdown" />
 
             <TextView
                 android:id="@+id/tv_report"

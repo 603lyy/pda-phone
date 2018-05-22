@@ -87,9 +87,8 @@ public class MainActivity extends BaseActivity {
         llReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, ReportActivity.class);
-//                startActivity(intent);
-                cancelOpen();
+                Intent intent = new Intent(MainActivity.this, ReportActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yaheen.pdaapp.R;
 import com.yaheen.pdaapp.util.ProgersssDialog;
 import com.yaheen.pdaapp.util.nfc.AESUtils;
@@ -38,6 +40,11 @@ import static com.yaheen.pdaapp.util.nfc.NFCUtils.toStringHex;
 public class ReportActivity extends BaseActivity {
 
     private final static String SCAN_ACTION = "scan.rcv.message";
+
+    /**
+     * 扫描跳转Activity RequestCode
+     */
+    public static final int REQUEST_CODE = 111;
 
     private ScanDevice sm;
 
@@ -86,21 +93,24 @@ public class ReportActivity extends BaseActivity {
         tvScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sm.isScanOpened()) {
-                    sm.startScan();
-                }
+//                if (sm.isScanOpened()) {
+//                    sm.startScan();
+//                }
+                Intent intent = new Intent(getApplication(), CaptureActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
 
         tvFetch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                load = true;
-                tvFetch.setBackground(getResources().getDrawable(R.drawable.btn_gary_round));
+                Toast.makeText(ReportActivity.this, "该功能还在开发中", Toast.LENGTH_SHORT).show();
+//                load = true;
+//                tvFetch.setBackground(getResources().getDrawable(R.drawable.btn_gary_round));
             }
         });
 
-        init();
+//        init();
         initNFC();
     }
 
@@ -150,6 +160,32 @@ public class ReportActivity extends BaseActivity {
         }
 
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /**
+         * 处理二维码扫描结果
+         */
+        if (requestCode == REQUEST_CODE) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    if (result != null) {
+                        tvAddress.setText(result);
+                    } else {
+                        Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                    }
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
 
     private void clearData() {
         tvAddress.setText("");
@@ -223,7 +259,7 @@ public class ReportActivity extends BaseActivity {
                         str = nfcVUtil.readOneBlock(2);
                         tech.close();
 //                        if (response != null) {
-                            setNoteBody(str);
+                        setNoteBody(str);
 //                        }
                     }
                 } catch (IOException e) {
