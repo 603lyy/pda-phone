@@ -199,8 +199,8 @@ public class BindActivity extends BaseActivity {
     private void update(String chipId, String id) {
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id", "402847fb63961f440163962e9845002");
-        jsonObject.addProperty("chipId", "052510");
+        jsonObject.addProperty("id", "402847fb63965f0201639661857f0000");
+        jsonObject.addProperty("chipId", "2LY1H7MU");
 
         RequestParams params = new RequestParams(updateUrl);
         params.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;");
