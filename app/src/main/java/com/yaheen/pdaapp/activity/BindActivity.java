@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.yaheen.pdaapp.R;
 import com.yaheen.pdaapp.bean.BindBean;
 import com.yaheen.pdaapp.util.ProgersssDialog;
@@ -61,6 +62,8 @@ public class BindActivity extends BaseActivity {
     private TextView tvFetch, tvFetchShow, tvScan, tvScanShow, tvCommit;
 
     private String url = "http://192.168.199.114:8080/shortlink/eai/updateLongLink.do";
+
+    private String updateUrl = "http://lyl.tunnel.echomod.cn/whnsubhekou/houseNumbers/update.do";
 
     private String ex_id = "", types = "";
 
@@ -101,8 +104,9 @@ public class BindActivity extends BaseActivity {
         tvCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog = new ProgersssDialog(BindActivity.this);
-                bind();
+//                dialog = new ProgersssDialog(BindActivity.this);
+//                bind();
+                update(tvScanShow.getText().toString(),tvFetchShow.getText().toString());
             }
         });
 
@@ -178,6 +182,38 @@ public class BindActivity extends BaseActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
 
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    private void update(String chipId, String id) {
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id", "402847fb63961f440163962e9845002");
+        jsonObject.addProperty("chipId", "052510");
+
+        RequestParams params = new RequestParams(updateUrl);
+        params.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;");
+        params.addQueryStringParameter("json", com.yaheen.pdaapp.util.nfc.Base64.encode(jsonObject.toString().getBytes()));
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Toast.makeText(BindActivity.this,"成功了",Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Toast.makeText(BindActivity.this,"失败",Toast.LENGTH_SHORT);
             }
 
             @Override

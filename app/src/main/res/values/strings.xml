@@ -4,6 +4,9 @@
 
     <string name="title_bar_msg_text">门牌信息</string>
     <string name="btn_commit_text">提交</string>
+    <string name="scan_success">扫描成功</string>
+    <string name="scan_fail">扫描失败</string>
+    <string name="scan_not">不是本系统的短链接</string>
 
     <string name="bind_activity_title_content">芯片绑定</string>
     <string name="bind_activity_short_link">短链接：</string>
@@ -16,6 +19,13 @@
     <string name="bind_activity_bind_success">绑定成功</string>
     <string name="bind_activity_bind_fail">绑定失败</string>
 
+    <string name="web_activity_short_link_used">该短链接已被使用</string>
+    <string name="web_activity_not_bind_short_link">该短链接已录入过数据，是否需要绑定芯片</string>
+    <string name="web_activity_not_bind_short_link_normal">录入数据成功，是否需要绑定芯片</string>
+    <string name="web_activity_not_bind_short_link_refresh">匹配数据成功，是否需要绑定芯片</string>
+    <string name="web_activity_not_go">否</string>
+    <string name="web_activity_go">是</string>
+    <string name="web_activity_dialog_title">提示</string>
 
     <string name="msg_sex_text">性别：</string>
     <string name="msg_id_text">门牌号：</string>

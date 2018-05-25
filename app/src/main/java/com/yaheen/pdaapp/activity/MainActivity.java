@@ -58,9 +58,9 @@ public class MainActivity extends BaseActivity {
         llBind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, BindActivity.class);
-//                startActivity(intent);
-                cancelOpen();
+                Intent intent = new Intent(MainActivity.this, BindActivity.class);
+                startActivity(intent);
+//                cancelOpen();
             }
         });
 

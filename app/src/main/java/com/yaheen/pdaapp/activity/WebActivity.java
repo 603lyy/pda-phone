@@ -18,6 +18,7 @@ import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.tencent.smtt.export.external.interfaces.GeolocationPermissionsCallback;
 import com.tencent.smtt.sdk.CookieSyncManager;
 import com.tencent.smtt.sdk.WebChromeClient;
@@ -27,9 +28,17 @@ import com.tencent.smtt.sdk.WebViewClient;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yaheen.pdaapp.R;
+import com.yaheen.pdaapp.bean.CheckBean;
+import com.yaheen.pdaapp.util.DialogUtils;
 import com.yaheen.pdaapp.util.ProgersssDialog;
+import com.yaheen.pdaapp.util.dialog.DialogCallback;
+import com.yaheen.pdaapp.util.dialog.IDialogCancelCallback;
 import com.yaheen.pdaapp.widget.WebJavaScriptProvider;
 import com.yaheen.pdaapp.widget.X5WebView;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 public class WebActivity extends BaseActivity {
 
@@ -38,19 +47,23 @@ public class WebActivity extends BaseActivity {
      */
     public static final int REQUEST_CODE = 111;
 
+    private Gson gson = new Gson();
+
     private ViewGroup mViewParent;
 
     private X5WebView mWebView;
 
     private ProgersssDialog progersssDialog;
 
-    private String url = "https://lhhk.020szsq.com/tool/toEntryMatch.do?shortLinkCode=";
+    private String checkUrl = "http://shortlink.cn/eai/getShortLinkCompleteInformation.do";
 
-    private String baseUrl = "https://lhhk.020szsq.com/tool/toEntryMatch.do";
-
-//    private String url = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do?shortLinkCode=";
+//    private String url = "https://lhhk.020szsq.com/tool/toEntryMatch.do?shortLinkCode=";
 //
-//    private String baseUrl = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do";
+//    private String baseUrl = "https://lhhk.020szsq.com/tool/toEntryMatch.do";
+
+    private String url = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do?shortLinkCode=";
+
+    private String baseUrl = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do";
 
     private String shortCode = "";
 
@@ -171,10 +184,108 @@ public class WebActivity extends BaseActivity {
         }
 
         @JavascriptInterface
+        public void showNormalToast() {
+            showGoDialog(R.string.web_activity_not_bind_short_link_normal, false);
+        }
+
+        @JavascriptInterface
+        public void showRefreshToast() {
+            showGoDialog(R.string.web_activity_not_bind_short_link_refresh, true);
+        }
+
+        @JavascriptInterface
         public void back() {
             finish();
         }
 
+    }
+
+    private void check(String slink) {
+
+        if (TextUtils.isEmpty(slink)) {
+            Toast.makeText(this, R.string.bind_activity_short_link_empty, Toast.LENGTH_SHORT).show();
+            progersssDialog.dismiss();
+            return;
+        }
+        slink = slink.substring(slink.lastIndexOf("/") + 1);
+
+        RequestParams params = new RequestParams(checkUrl);
+        params.addQueryStringParameter("key", "7zbQUBNY0XkEcUoushaJD7UcKyWkc91q");
+        params.addQueryStringParameter("shortLinkCode", slink);
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                CheckBean checkBean = gson.fromJson(result, CheckBean.class);
+                if (checkBean != null && checkBean.isResult()) {
+                    checkShortLink(checkBean.getEntity());
+                } else {
+                    Toast.makeText(WebActivity.this, R.string.scan_not, Toast.LENGTH_SHORT).show();
+                    progersssDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Toast.makeText(WebActivity.this, R.string.scan_fail, Toast.LENGTH_SHORT).show();
+                progersssDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
+    }
+
+    private void checkShortLink(CheckBean.EntityBean date) {
+
+        if (date == null) {
+            Toast.makeText(this, R.string.scan_fail, Toast.LENGTH_SHORT).show();
+            progersssDialog.dismiss();
+            return;
+        }
+
+        //长链接不为空
+        if (!TextUtils.isEmpty(date.getLink())) {
+            //门牌ID为空,即已经录入数据，提示是否需要绑定门牌ID
+            if (TextUtils.isEmpty(date.getNote())) {
+                showGoDialog(R.string.web_activity_not_bind_short_link, false);
+            }
+            //门牌ID不为空，即门牌已经可以正常使用，提示短链接已被使用
+            else {
+                Toast.makeText(this, R.string.web_activity_short_link_used, Toast.LENGTH_SHORT).show();
+                progersssDialog.dismiss();
+            }
+        }
+        //正常情况，进入录入数据环节
+        else {
+            Toast.makeText(this, R.string.scan_success, Toast.LENGTH_SHORT).show();
+            loadUrl();
+        }
+    }
+
+    private void showGoDialog(int string, final boolean refresh) {
+        DialogUtils.showNormalDialog(this, getString(string),
+                new DialogCallback() {
+                    @Override
+                    public void callback() {
+                        if (refresh) {
+                            mWebView.loadUrl("javascript:myrefresh()");
+                        }
+                        Toast.makeText(WebActivity.this, "是", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new IDialogCancelCallback() {
+                    @Override
+                    public void cancelCallback() {
+                        Toast.makeText(WebActivity.this, "否", Toast.LENGTH_SHORT).show();
+                    }
+                }, getString(R.string.web_activity_go), getString(R.string.web_activity_not_go),
+                getString(R.string.web_activity_dialog_title));
     }
 
     @Override
@@ -192,6 +303,7 @@ public class WebActivity extends BaseActivity {
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
                     if (result != null) {
+                        Toast.makeText(this, "扫描成功", Toast.LENGTH_LONG).show();
                         progersssDialog = new ProgersssDialog(this);
                         shortCode = result;
                         loadUrl();

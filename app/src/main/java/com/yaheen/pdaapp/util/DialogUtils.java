@@ -15,7 +15,9 @@ public class DialogUtils {
 
     private static AlertDialog dialog;
 
-    public static void showNormalDialog(Context context, String msg, final DialogCallback callback, final IDialogCancelCallback cancelCallback, String PositiveButton, String NegativeButton) {
+    public static void showNormalDialog(Context context, String msg, final DialogCallback callback,
+                                        final IDialogCancelCallback cancelCallback, String PositiveButton,
+                                        String NegativeButton,String title) {
         /* @setIcon 设置对话框图标
          * @setTitle 设置对话框标题
          * @setMessage 设置对话框消息提示
@@ -23,7 +25,7 @@ public class DialogUtils {
          */
         final AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(context);
-        normalDialog.setTitle("提醒");
+        normalDialog.setTitle(title);
         normalDialog.setMessage(msg);
         normalDialog.setPositiveButton(PositiveButton,
                 new DialogInterface.OnClickListener() {
