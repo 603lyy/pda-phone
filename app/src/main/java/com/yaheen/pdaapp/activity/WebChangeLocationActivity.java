@@ -250,12 +250,13 @@ public class WebChangeLocationActivity extends BaseActivity {
         } else {
             //门牌ID为空,提示短链接未被使用
             if (TextUtils.isEmpty(date.getNote())) {
-                showGoDialog(R.string.web_activity_short_link_unuse, false);
+                Toast.makeText(this, R.string.web_activity_short_link_unuse, Toast.LENGTH_SHORT).show();
             }
             //门牌ID不为空，提示未录入数据
             else {
-                showGoDialog(R.string.web_activity_need_data, false);
+                Toast.makeText(this, R.string.web_activity_need_data, Toast.LENGTH_SHORT).show();
             }
+            progersssDialog.dismiss();
         }
     }
 
