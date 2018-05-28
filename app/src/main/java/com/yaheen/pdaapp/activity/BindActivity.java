@@ -63,7 +63,7 @@ public class BindActivity extends BaseActivity {
 
     private String url = "http://192.168.199.114:8080/shortlink/eai/updateLongLink.do";
 
-    private String updateUrl = "http://lyl.tunnel.echomod.cn/whnsubhekou/houseNumbers/update.do";
+    private String updateUrl = "http://lyl.tunnel.echomod.cn/whnsubhekou/houseNumbers/updateFormDataManagement.do";
 
     private String ex_id = "", types = "";
 
@@ -199,8 +199,8 @@ public class BindActivity extends BaseActivity {
     private void update(String chipId, String id) {
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id", "402847fb63965f0201639661857f0000");
-        jsonObject.addProperty("chipId", "2LY1H7MU");
+        jsonObject.addProperty("id", "402847fb63961f440163962e98450026");
+        jsonObject.addProperty("chipId", "052802");
 
         RequestParams params = new RequestParams(updateUrl);
         params.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;");

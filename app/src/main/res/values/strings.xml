@@ -20,6 +20,8 @@
     <string name="bind_activity_bind_fail">绑定失败</string>
 
     <string name="web_activity_short_link_used">该短链接已被使用</string>
+    <string name="web_activity_short_link_unuse">该短链接未被绑定</string>
+    <string name="web_activity_need_data">该短链接未录入数据</string>
     <string name="web_activity_not_bind_short_link">该短链接已录入过数据，是否需要绑定芯片</string>
     <string name="web_activity_not_bind_short_link_normal">录入数据成功，是否需要绑定芯片</string>
     <string name="web_activity_not_bind_short_link_refresh">匹配数据成功，是否需要绑定芯片</string>

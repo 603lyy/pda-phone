@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity {
 
     private TextView tvBind, tvMsg, tvManage, tvReport;
 
-    private LinearLayout llBind, llMsg, llManage, llReport;
+    private LinearLayout llBind, llMsg, llManage, llReport,llChangeLocation;
 
     private String barcodeStr;
 
@@ -54,13 +54,14 @@ public class MainActivity extends BaseActivity {
         llBind = findViewById(R.id.ll_bind);
         llReport = findViewById(R.id.ll_report);
         llManage = findViewById(R.id.ll_manage);
+        llChangeLocation = findViewById(R.id.ll_change_location);
 
         llBind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, BindActivity.class);
-                startActivity(intent);
-//                cancelOpen();
+//                Intent intent = new Intent(MainActivity.this, BindActivity.class);
+//                startActivity(intent);
+                cancelOpen();
             }
         });
 
@@ -88,6 +89,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ReportActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        llChangeLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, WebChangeLocationActivity.class);
                 startActivity(intent);
             }
         });
