@@ -57,19 +57,21 @@ public class WebActivity extends BaseActivity {
 
     private String checkUrl = "http://shortlink.cn/eai/getShortLinkCompleteInformation.do";
 
-//    private String url = "https://lhhk.020szsq.com/tool/toEntryMatch.do?shortLinkCode=";
+    private String url = "https://lhhk.020szsq.com/tool/toEntryMatch.do?shortLinkCode=";
+
+    private String baseUrl = "https://lhhk.020szsq.com/tool/toEntryMatch.do";
+
+//    private String url = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do?shortLinkCode=";
 //
-//    private String baseUrl = "https://lhhk.020szsq.com/tool/toEntryMatch.do";
-
-    private String url = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do?shortLinkCode=";
-
-    private String baseUrl = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do";
+//    private String baseUrl = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toEntryMatch.do";
 
     private String shortCode = "";
 
     private String type = "mark=";
 
     private String typeStr = "b";
+
+    private boolean hasId = false;
 
     @SuppressLint("JavascriptInterface")
     @Override
@@ -249,6 +251,8 @@ public class WebActivity extends BaseActivity {
             return;
         }
 
+        hasId = false;
+
         //长链接不为空
         if (!TextUtils.isEmpty(date.getLink())) {
             //门牌ID为空,即已经录入数据，提示是否需要绑定门牌ID
@@ -263,12 +267,27 @@ public class WebActivity extends BaseActivity {
         }
         //正常情况，进入录入数据环节
         else {
+            if (!TextUtils.isEmpty(date.getNote())) {
+                hasId = true;
+            }
             Toast.makeText(this, R.string.scan_success, Toast.LENGTH_SHORT).show();
             loadUrl();
         }
     }
 
     private void showGoDialog(int string, final boolean refresh) {
+
+        if (hasId) {
+            if (refresh) {
+                mWebView.loadUrl("javascript:myrefresh()");
+                if (typeStr.equals("b")) {
+                    shortCode = "";
+                    loadUrl();
+                }
+            }
+            return;
+        }
+
         DialogUtils.showNormalDialog(this, getString(string),
                 new DialogCallback() {
                     @Override

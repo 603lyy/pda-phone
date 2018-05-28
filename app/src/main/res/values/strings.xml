@@ -40,7 +40,7 @@
     <string name="msg_party_member_text">党员户：</string>
 
     <string name="report_title_content">报障</string>
-    <string name="report_address">门牌地址：</string>
+    <string name="report_address">门牌短链接：</string>
     <string name="report_chip">芯片编号：</string>
     <string name="report_fetch">读取</string>
     <string name="report_scan">扫描</string>

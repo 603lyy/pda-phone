@@ -26,10 +26,15 @@ import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yaheen.pdaapp.R;
+import com.yaheen.pdaapp.bean.ReportBean;
 import com.yaheen.pdaapp.util.ProgersssDialog;
 import com.yaheen.pdaapp.util.nfc.AESUtils;
 import com.yaheen.pdaapp.util.nfc.Converter;
 import com.yaheen.pdaapp.util.nfc.NfcVUtil;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +50,10 @@ public class ReportActivity extends BaseActivity {
      * 扫描跳转Activity RequestCode
      */
     public static final int REQUEST_CODE = 111;
+
+//    private String url = "http://lyl.tunnel.echomod.cn/whnsubhekou/tool/reportByApp.do";
+
+    private String url = "https://lhhk.020szsq.com/tool/reportByApp.do";
 
     private ScanDevice sm;
 
@@ -110,6 +119,13 @@ public class ReportActivity extends BaseActivity {
             }
         });
 
+        tvCommit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                commit();
+            }
+        });
+
 //        init();
         initNFC();
     }
@@ -143,6 +159,56 @@ public class ReportActivity extends BaseActivity {
         IntentFilter td = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
         IntentFilter ttech = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
         mNdefExchangeFilters = new IntentFilter[]{ndefDetected, ttech, td};
+    }
+
+
+    private void commit() {
+        String chipId = tvFetchShow.getText().toString();
+        String shortLinkCode = tvAddress.getText().toString();
+
+        if (TextUtils.isEmpty(chipId) && TextUtils.isEmpty(shortLinkCode)) {
+            Toast.makeText(this, "请扫描二维码或读取门牌ID", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        dialog = new ProgersssDialog(this);
+
+        RequestParams requestParams = new RequestParams(url);
+        if (!TextUtils.isEmpty(chipId)) {
+            requestParams.addParameter("chipId", chipId);
+        }
+        if (!TextUtils.isEmpty(shortLinkCode)) {
+            shortLinkCode = shortLinkCode.substring(shortLinkCode.lastIndexOf("/") + 1);
+            requestParams.addParameter("shortLinkCode", shortLinkCode);
+        }
+        requestParams.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;");
+        x.http().post(requestParams, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                ReportBean reportBean = gson.fromJson(result, ReportBean.class);
+                if (reportBean != null && reportBean.isResult()) {
+                    clearData();
+                    Toast.makeText(ReportActivity.this, "报障成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ReportActivity.this, "报障失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Toast.makeText(ReportActivity.this, "报障失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+                dialog.dismiss();
+            }
+        });
     }
 
     private BroadcastReceiver mScanReceiver = new BroadcastReceiver() {

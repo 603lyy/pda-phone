@@ -63,7 +63,9 @@ public class BindActivity extends BaseActivity {
 
     private String url = "http://192.168.199.114:8080/shortlink/eai/updateLongLink.do";
 
-    private String updateUrl = "http://lyl.tunnel.echomod.cn/whnsubhekou/houseNumbers/updateFormDataManagement.do";
+//    private String updateUrl = "http://lyl.tunnel.echomod.cn/whnsubhekou/houseNumbers/updateFormDataManagement.do";
+
+    private String updateUrl = "https://lhhk.020szsq.com/houseNumbers/updateFormDataManagement.do";
 
     private String ex_id = "", types = "";
 

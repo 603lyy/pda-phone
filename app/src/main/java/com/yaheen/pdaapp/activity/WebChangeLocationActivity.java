@@ -56,13 +56,13 @@ public class WebChangeLocationActivity extends BaseActivity {
 
     private String checkUrl = "http://shortlink.cn/eai/getShortLinkCompleteInformation.do";
 
-//    private String url = "https://lhhk.020szsq.com/tool/toUpdateLocation.do?shortLinkCode=";
+    private String url = "https://lhhk.020szsq.com/tool/toUpdateLocation.do?shortLinkCode=";
+
+    private String baseUrl = "https://lhhk.020szsq.com/tool/toUpdateLocation.do";
+
+//    private String url = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toUpdateLocation.do?shortLinkCode=";
 //
-//    private String baseUrl = "https://lhhk.020szsq.com/tool/toUpdateLocation.do";
-
-    private String url = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toUpdateLocation.do?shortLinkCode=";
-
-    private String baseUrl = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toUpdateLocation.do";
+//    private String baseUrl = "https://lyl.tunnel.echomod.cn/whnsubhekou/tool/toUpdateLocation.do";
 
     private String shortCode = "";
 

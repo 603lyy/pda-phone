@@ -5,7 +5,7 @@ android {
         release {
             keyAlias 'pda'
             keyPassword 'yaheen'
-            storeFile file('F:/lyy/project/pda-phone/pda.jks')
+            storeFile file('E:/Example/pda-phone/pda.jks')
             storePassword 'yaheen'
         }
     }
