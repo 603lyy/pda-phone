@@ -22,6 +22,7 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yaheen.pdaapp.BaseApp;
 import com.yaheen.pdaapp.R;
 import com.yaheen.pdaapp.util.DialogUtils;
+import com.yaheen.pdaapp.util.TimeUtils;
 import com.yaheen.pdaapp.util.dialog.DialogCallback;
 import com.yaheen.pdaapp.util.dialog.IDialogCancelCallback;
 
@@ -40,7 +41,7 @@ public class MainActivity extends BaseActivity {
 
     private TextView tvBind, tvMsg, tvManage, tvReport;
 
-    private LinearLayout llBind, llMsg, llManage, llReport,llChangeLocation;
+    private LinearLayout llBind, llMsg, llManage, llReport, llChangeLocation;
 
     private String barcodeStr;
 
@@ -80,6 +81,11 @@ public class MainActivity extends BaseActivity {
 //                Intent intent = new Intent(getApplication(), CaptureActivity.class);
 //                startActivityForResult(intent, REQUEST_CODE);
 
+                if (TimeUtils.isTimeOver()) {
+                    Toast.makeText(MainActivity.this, "授权已过期", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Intent intent = new Intent(MainActivity.this, WebActivity.class);
                 startActivity(intent);
             }
@@ -88,6 +94,11 @@ public class MainActivity extends BaseActivity {
         llReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (TimeUtils.isTimeOver()) {
+                    Toast.makeText(MainActivity.this, "授权已过期", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Intent intent = new Intent(MainActivity.this, ReportActivity.class);
                 startActivity(intent);
             }
@@ -96,6 +107,11 @@ public class MainActivity extends BaseActivity {
         llChangeLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (TimeUtils.isTimeOver()) {
+                    Toast.makeText(MainActivity.this, "授权已过期", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Intent intent = new Intent(MainActivity.this, WebChangeLocationActivity.class);
                 startActivity(intent);
             }
@@ -137,7 +153,7 @@ public class MainActivity extends BaseActivity {
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
                     if (result != null) {
                         Intent intent = new Intent(MainActivity.this, WebActivity.class);
-                        intent.putExtra("shortCode",result);
+                        intent.putExtra("shortCode", result);
                         startActivity(intent);
                     } else {
                         Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
