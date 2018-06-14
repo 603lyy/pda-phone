@@ -5,7 +5,7 @@ android {
         release {
             keyAlias 'pda'
             keyPassword 'yaheen'
-            storeFile file('E:/Example/pda-phone/pda.jks')
+            storeFile file('F:/lyy/project/pda-phone/pda.jks')
             storePassword 'yaheen'
         }
     }
@@ -14,8 +14,8 @@ android {
         applicationId "com.yaheen.pdaapp"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 1003
-        versionName "1.0.03"
+        versionCode 1004
+        versionName "1.0.04"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk { abiFilters "armeabi" }
     }

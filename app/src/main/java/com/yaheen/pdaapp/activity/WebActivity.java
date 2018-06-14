@@ -279,7 +279,12 @@ public class WebActivity extends BaseActivity {
 
         if (hasId) {
             if (refresh) {
-                mWebView.loadUrl("javascript:myrefresh()");
+                mWebView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWebView.loadUrl("javascript:myrefresh()");
+                    }
+                });
                 if (typeStr.equals("b")) {
                     shortCode = "";
                     loadUrl();
@@ -293,7 +298,13 @@ public class WebActivity extends BaseActivity {
                     @Override
                     public void callback() {
                         if (refresh) {
-                            mWebView.loadUrl("javascript:myrefresh()");
+                            mWebView.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mWebView.loadUrl("javascript:myrefresh()");
+                                }
+                            });
+//                            mWebView.loadUrl("javascript:myrefresh()");
                             if (typeStr.equals("b")) {
                                 shortCode = "";
                                 loadUrl();
@@ -306,7 +317,13 @@ public class WebActivity extends BaseActivity {
                 new IDialogCancelCallback() {
                     @Override
                     public void cancelCallback() {
-                        mWebView.loadUrl("javascript:myrefresh()");
+                        mWebView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mWebView.loadUrl("javascript:myrefresh()");
+                            }
+                        });
+//                        mWebView.loadUrl("javascript:myrefresh()");
                         if (typeStr.equals("b")) {
                             shortCode = "";
                             loadUrl();
